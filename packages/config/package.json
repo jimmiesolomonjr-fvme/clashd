@@ -1,0 +1,12 @@
+{
+  "name": "@clashd/config",
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "tsconfig.base.json",
+    "tsconfig.nextjs.json",
+    "tsconfig.react-native.json",
+    "tsconfig.library.json",
+    "eslint.config.mjs"
+  ]
+}

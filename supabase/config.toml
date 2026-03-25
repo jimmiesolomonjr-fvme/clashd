@@ -1,0 +1,23 @@
+[project]
+id = "clashd"
+name = "Clashd"
+
+[api]
+port = 54321
+schemas = ["public"]
+
+[db]
+port = 54322
+
+[studio]
+port = 54323
+
+[auth]
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["http://localhost:3000", "exp://localhost:19000"]
+
+[auth.external.google]
+enabled = false
+
+[auth.external.apple]
+enabled = false

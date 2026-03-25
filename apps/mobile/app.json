@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "Clashd",
+    "slug": "clashd",
+    "version": "1.0.0",
+    "scheme": "clashd",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#0F0F0F"
+    },
+    "platforms": ["ios", "android"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.clashd.app"
+    },
+    "android": {
+      "package": "com.clashd.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#0F0F0F"
+      }
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

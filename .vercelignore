@@ -1,0 +1,8 @@
+apps/mobile
+supabase/
+.expo/
+coverage/
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
