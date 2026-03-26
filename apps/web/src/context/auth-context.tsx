@@ -34,20 +34,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     // Fetch the initial session.
     const getInitialSession = async () => {
-      const {
-        data: { session: currentSession },
-      } = await supabase.auth.getSession();
+      try {
+        const {
+          data: { session: currentSession },
+        } = await supabase.auth.getSession();
 
-      setSession(currentSession);
-      setUser(currentSession?.user ?? null);
+        setSession(currentSession);
+        setUser(currentSession?.user ?? null);
 
-      // Fetch profile if user is authenticated
-      if (currentSession?.user) {
-        const { data: profileData } = await getProfile(supabase, currentSession.user.id);
-        setProfile((profileData as unknown as Profile) ?? null);
+        // Fetch profile if user is authenticated
+        if (currentSession?.user) {
+          const { data: profileData } = await getProfile(supabase, currentSession.user.id);
+          setProfile((profileData as unknown as Profile) ?? null);
+        }
+      } catch {
+        // Connection failed — continue as unauthenticated
+      } finally {
+        setIsLoading(false);
       }
-
-      setIsLoading(false);
     };
 
     getInitialSession();
