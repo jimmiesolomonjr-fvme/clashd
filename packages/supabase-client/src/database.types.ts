@@ -391,6 +391,40 @@ export interface Database {
         };
         Relationships: [];
       };
+      suggested_topics: {
+        Row: {
+          id: string;
+          topic: string;
+          category: string;
+          side_a_label: string;
+          side_b_label: string;
+          is_active: boolean;
+          used_count: number;
+          batch_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          topic: string;
+          category: string;
+          side_a_label?: string;
+          side_b_label?: string;
+          is_active?: boolean;
+          used_count?: number;
+          batch_id: string;
+        };
+        Update: {
+          id?: string;
+          topic?: string;
+          category?: string;
+          side_a_label?: string;
+          side_b_label?: string;
+          is_active?: boolean;
+          used_count?: number;
+          batch_id?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;

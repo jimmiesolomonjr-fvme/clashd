@@ -182,3 +182,17 @@ export interface Bookmark {
   debate_id: string;
   created_at: string;
 }
+
+export type TopicCategory = 'entertainment' | 'culture' | 'sports' | 'politics' | 'relationships';
+
+export interface SuggestedTopic {
+  id: string;
+  topic: string;
+  category: TopicCategory;
+  side_a_label: string;
+  side_b_label: string;
+  is_active: boolean;
+  used_count: number;
+  batch_id: string;
+  created_at: string;
+}

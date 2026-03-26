@@ -373,6 +373,17 @@ export async function getUserSubscription(client: Client, userId: string) {
     .maybeSingle();
 }
 
+// --- Suggested Topics ---
+
+export async function getSuggestedTopics(client: Client, limit = 50) {
+  return client
+    .from('suggested_topics')
+    .select('*')
+    .eq('is_active', true)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+}
+
 // --- Audience Meter Snapshots (for replay) ---
 
 export async function getDebateSnapshots(client: Client, debateId: string) {

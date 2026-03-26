@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/context/auth-context';
 import { createClient } from '@/lib/supabase/client';
 import { FORMAT_PRESETS, createDebateSchema } from '@clashd/shared';
-import type { DebateFormat } from '@clashd/shared';
+import type { DebateFormat, SuggestedTopic } from '@clashd/shared';
+import { getSuggestedTopics } from '@clashd/supabase-client';
 
 const FORMAT_OPTIONS: { value: DebateFormat; label: string; description: string }[] = [
   { value: 'classic', label: 'Classic', description: '3 rounds, 2 min each' },
@@ -32,6 +33,14 @@ export default function CreateDebatePage() {
   const [opponentUsername, setOpponentUsername] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [suggestedTopics, setSuggestedTopics] = useState<SuggestedTopic[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+  useEffect(() => {
+    getSuggestedTopics(supabase).then(({ data }) => {
+      if (data) setSuggestedTopics(data as SuggestedTopic[]);
+    });
+  }, [supabase]);
 
   function handleFormatChange(newFormat: DebateFormat) {
     setFormat(newFormat);
@@ -177,6 +186,62 @@ export default function CreateDebatePage() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Hot Topics */}
+        {suggestedTopics.length > 0 && (
+          <div>
+            <h2 className="mb-3 text-sm font-semibold text-clash-red uppercase tracking-wider">
+              Hot Topics
+            </h2>
+            {/* Category filter */}
+            <div className="mb-3 flex flex-wrap gap-2">
+              {['entertainment', 'culture', 'sports', 'politics', 'relationships'].map((cat) => {
+                const count = suggestedTopics.filter((t) => t.category === cat).length;
+                if (count === 0) return null;
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+                    className={`rounded-full px-3 py-1 text-xs font-medium capitalize transition-colors ${
+                      activeCategory === cat
+                        ? 'bg-white text-black'
+                        : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700 hover:text-white'
+                    }`}
+                  >
+                    {cat} ({count})
+                  </button>
+                );
+              })}
+            </div>
+            {/* Topic chips */}
+            <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto rounded-lg border border-neutral-800 bg-neutral-900/50 p-3">
+              {suggestedTopics
+                .filter((t) => !activeCategory || t.category === activeCategory)
+                .map((t) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => {
+                      setTopic(t.topic);
+                      setSideALabel(t.side_a_label);
+                      setSideBLabel(t.side_b_label);
+                    }}
+                    className={`rounded-lg border px-3 py-1.5 text-xs transition-colors ${
+                      topic === t.topic
+                        ? 'border-clash-red bg-clash-red/20 text-white'
+                        : 'border-neutral-700 bg-neutral-800 text-neutral-300 hover:border-neutral-500 hover:text-white'
+                    }`}
+                  >
+                    {t.topic}
+                  </button>
+                ))}
+            </div>
+            <p className="mt-2 text-xs text-neutral-500">
+              Tap a topic to use it, or type your own below.
+            </p>
+          </div>
+        )}
+
         {/* Topic */}
         <div>
           <label htmlFor="topic" className="mb-1.5 block text-sm font-medium text-neutral-300">
