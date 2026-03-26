@@ -4,7 +4,7 @@ import { createServerClient } from '@supabase/ssr';
 
 // Routes that require authentication — unauthenticated users are redirected
 // to /login.
-const PROTECTED_ROUTES = ['/profile/edit', '/debate/create'];
+const PROTECTED_ROUTES = ['/profile/edit'];
 
 export async function middleware(request: NextRequest) {
   // First, refresh the session (handles cookie rotation).

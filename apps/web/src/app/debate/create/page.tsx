@@ -91,7 +91,7 @@ export default function CreateDebatePage() {
       const { data: opponent, error: lookupError } = await supabase
         .from('profiles')
         .select('id')
-        .eq('username', opponentUsername.trim())
+        .ilike('username', opponentUsername.trim())
         .single();
 
       if (lookupError || !opponent) {
